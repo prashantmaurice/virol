@@ -1,4 +1,0 @@
-virol
-=====
-
-Multiplayer Virol Game
