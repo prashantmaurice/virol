@@ -1,14 +1,17 @@
 angular.module('starter.controllers', [])
 
-.controller('DashCtrl', function($scope) {
+.controller('DashCtrl', function($scope, Game) {
+    $scope.allusers = Game.allUsers();
 })
 
-.controller('FriendsCtrl', function($scope, Friends) {
-  $scope.friends = Friends.all();
+.controller('FriendsCtrl', function($scope, Game) {
+  $scope.dataApi = Game.friends;
+  setTimeout(function(){Game.add(); console.log("ADDED");},1500);
+
 })
 
-.controller('FriendDetailCtrl', function($scope, $stateParams, Friends) {
-  $scope.friend = Friends.get($stateParams.friendId);
+.controller('FriendDetailCtrl', function($scope, $stateParams, Game) {
+  $scope.friend = Game.get($stateParams.friendId);
 })
 
 .controller('AccountCtrl', function($scope) {
