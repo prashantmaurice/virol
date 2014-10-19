@@ -1,5 +1,15 @@
 <ion-view title="Dashboard">
   <ion-content class="padding">
+    <span ng-bind="data">sgdfh</span>
     <h4 ng-repeat="user in allusers">== {{user.id}}</h4>
-  </ion-content>
+    <div ng-controller="MadScientistCtrl" class="column">
+
+      <div ng-show="alive">
+          FIRST123
+      </div>
+
+      <div ng-hide="alive">
+          SECONF
+      </div>
+        <button ng-click="refresh()">REFRESH
 </ion-view>
