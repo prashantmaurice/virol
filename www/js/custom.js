@@ -26,6 +26,12 @@ function connectUser(elem){
 function disconnectUser() {
     socket.emit('user disconnect', {user1 : userId, user2:connectedPlayer});
 }
+function startGame() {
+    socket.emit('command', {user1 : userId, user2:connectedPlayer, cmd : "start"});
+}
+function commandPlay(msg) {
+    location.href="#/tab/friends";
+}
 $(document ).ready(function() {
     console.log( "APP ready" );
     socket = io('http://192.168.1.10:9000', {path: '/socket.io'});
@@ -71,6 +77,9 @@ $(document ).ready(function() {
         redrawUsersOnline();
     });
 
-
-
+    //COMMANDS
+    socket.on('command', function(msg){
+        console.log("CMD:"+JSON.stringify(msg));
+        commandPlay(msg);
+    });
 });
