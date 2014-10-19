@@ -4,7 +4,14 @@ var users = [];
 var dataApi ={
     users : users
 };
-var board = matrix( 6 , 5, 0);
+var prevMove = null;
+var boardSIze = { x : 5, y : 6};
+var board = matrix( boardSIze.y , boardSIze.x, { player:0,value:0});
+for(var i=0;i<board.length;i++){
+    for(var j=0;j<board[i].length;j++){
+        board[i][j] = { player:0,value:0};
+    }
+}
 var refreshControllers = [];
 var debug ="nothing";
 var userId = null;
@@ -27,18 +34,51 @@ function connectUser(elem){
 function disconnectUser() {
     socket.emit('user disconnect', {user1 : userId, user2:connectedPlayer});
 }
+
+//GAME LOGICS
 function startGame() {
 //    socket.emit('command', {user1 : userId, user2:connectedPlayer, cmd : "start"});
 }
 function startGameCmd() {
     socket.emit('command', {user1 : userId, user2:connectedPlayer, cmd : "start"});
-
+}
+function clickRing(elem){
+    console.log("MOVE:"+elem.getAttribute('data-x')+"=="+elem.getAttribute('data-y'));
+    socket.emit('command', {user1 : userId, user2 :connectedPlayer, cmd : "move",moveX : parseInt(elem.getAttribute('data-x')), moveY:parseInt(elem.getAttribute('data-y')), player:userId});
 }
 function commandPlay(msg) {
 //    location.href="#/tab/friends";
 //    $ionicSlideBoxDelegate.next()
     redrawGameBoard();
 }
+function commandMove(msg) {
+    if(prevMove==msg.player) return;
+    prevMove=msg.player;
+    incrementRing(msg.moveX,msg.moveY,msg.player);
+    redrawGameBoard();
+}
+function incrementRing(x,y, player){
+    if((x<0)|(y<0)|(x>=boardSIze.x)|(y>=boardSIze.y)){console.log("LIMITS"+(x<0)+"="+(y<0)+"="+(x>=boardSIze.x)+"="+(y>=boardSIze.y)+"="+x+"="+boardSIze.x);return;}
+    var currNum = board[y][x].value;
+    var currPlayer = board[y][x].player;
+    if(currNum<3) {
+        board[y][x].value++;
+        board[y][x].player=player;
+    }
+    else{
+        board[y][x].value=1;
+        burst(x,y, player);
+    }
+}
+function burst(x,y, player){
+    incrementRing(x-1,y, player);
+    incrementRing(x+1,y, player);
+    incrementRing(x,y-1, player);
+    incrementRing(x,y+1, player);
+}
+
+
+
 function matrix( rows, cols, defaultValue){
     var arr = [];
     for(var i=0; i < rows; i++){
@@ -56,18 +96,21 @@ function redrawGameBoard(){
     for(var i=0;i<board.length;i++){
         temp += "<tr>";
         for(var j=0;j<board[i].length;j++){
+            var temp2 = ((board[i][j].player==userId)?'op':'');
             temp += "<td class='gameBox'>";
             temp += "<div class='dummy'></div>";
-            temp += "<div class='content'>";
-            if(board[i][j]==0)
-                temp += "<div class='contentInside0 rotating'><div class='insidecircle'></div></div>";
-            if(board[i][j]==1)
-                temp += "<div class='contentInside1 rotating'><div class='insidecircle'></div></div>";
-            if(board[i][j]==2)
-                temp += "<div class='contentInside2 rotating'><div class='semicircle'></div><div class='split2circle'></div><div class='insidecircle'></div></div>";
-            if(board[i][j]==3){
-                temp += "<div class='contentInside3 rotating'><div class='semicircle1'></div><div class='semicircle2'></div><div class='semicircle3'></div>";
-                temp += "<div class='split3circle1'></div><div class='split3circle2'></div><div class='split3circle3'></div><div class='insidecircle'></div></div>";
+            temp += "<div class='content' data-x="+j+" data-y="+i+" onclick='clickRing(this)'>";
+            if(board[i][j].value==0)
+                temp += "<div class='contentInside rotating'><div class='insidecircle'></div></div>";
+            if(board[i][j].value==1)
+                temp += "<div class='contentInside "+temp2+" type1 rotating'><div class='insidecircle'></div></div>";
+            if(board[i][j].value==2)
+                temp += "<div class='contentInside "+temp2+" type2 rotating'><div class='semicircle "+temp2+"'></div>" +
+                    "<div class='split2circle'></div><div class='insidecircle'></div></div>";
+            if(board[i][j].value==3){
+                temp += "<div class='contentInside "+temp2+" type3 rotating'>" +
+                    "<div class='semicircle1 "+temp2+"'></div><div class='semicircle2 "+temp2+"'></div><div class='semicircle3 "+temp2+"'></div>";
+                temp += "<div class='split3circle t1'></div><div class='split3circle t2'></div><div class='split3circle t3'></div><div class='insidecircle'></div></div>";
             }
 
             temp += "</div>";
@@ -134,6 +177,9 @@ $(document ).ready(function() {
     //COMMANDS
     socket.on('command', function(msg){
         console.log("CMD:"+JSON.stringify(msg));
-        commandPlay(msg);
+        if(msg.cmd=="start")
+            commandPlay(msg);
+        if(msg.cmd=="move")
+            commandMove(msg);
     });
 });

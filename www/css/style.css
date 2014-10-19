@@ -53,7 +53,7 @@ td .content {
     left:0;
     right:0;
 }
-.contentInside0{
+.contentInside{
     border-radius: 50%;
     width: 60%;
     height: 60%;
@@ -61,29 +61,23 @@ td .content {
     background: #38526b;
     overflow: hidden;
 }
-.contentInside1{
-    border-radius: 50%;
-    width: 60%;
-    height: 60%;
-    margin:20%;
+.contentInside.type1{
     background: #4d9790;
-    overflow: hidden;
 }
-.contentInside2{
-    border-radius: 50%;
-    width: 60%;
-    height: 60%;
-    margin:20%;
+.contentInside.type2{
     background:#3ac6a9;
-    overflow: hidden;
 }
-.contentInside3{
-    border-radius: 50%;
-    width: 60%;
-    height: 60%;
-    margin:20%;
+.contentInside.type3{
     background:#3ac6a9;
-    overflow: hidden;
+}
+.contentInside.type1.op{
+    background: #e4030f;
+}
+.contentInside.type2.op{
+    background: #ed4e3d;
+}
+.contentInside.type3.op{
+    background: #fc5442;
 }
 .insidecircle{
     border-radius: 105%;
@@ -104,36 +98,22 @@ td .content {
 }
 .split3circle{
     width: 4%;
-    height: 100%;
-    left: 48%;
-    top: 0;
+    height: 50%;
     position: absolute;
     background:#2D3E50;
 }
-.split3circle1{
-    width: 4%;
-    height: 50%;
+.split3circle.t1{
     left: 48%;
     top: 0;
-    position: absolute;
-    background:#2D3E50;
 }
-.split3circle2{
-    width: 4%;
-    height: 50%;
+.split3circle.t2{
     left: 75%;
     top: 40%;
-    position: absolute;
-    background:#2D3E50;
     -webkit-transform: rotate(120deg);
 }
-.split3circle3{
-    width: 4%;
-    height: 50%;
+.split3circle.t3{
     right: 75%;
     top: 40%;
-    position: absolute;
-    background:#2D3E50;
     -webkit-transform: rotate(-120deg);
 }
 .semicircle{
@@ -144,6 +124,7 @@ td .content {
     background: #1daa94;
     position: relative;
 }
+.semicircle.op{background: #e4030f;}
 .semicircle1{
     width: 50%;
     height: 100%;
@@ -170,12 +151,15 @@ td .content {
     position: relative;
     background: #23c2a8;
 }
+.semicircle1.op{background: #ed4e3d;}
+.semicircle2.op{background: #e4030f;}
+.semicircle3.op{background: #fc5442;}
 @-webkit-keyframes rotating {
     from{-webkit-transform: rotate(0deg);}
     to{-webkit-transform: rotate(360deg);   }
 }
 .rotating {
-    /*-webkit-animation: rotating 2s linear infinite;*/
+    -webkit-animation: rotating 6s linear infinite;
 }
 .slider{
     height:100%;
