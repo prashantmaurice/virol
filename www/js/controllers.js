@@ -1,10 +1,12 @@
 angular.module('starter.controllers', [])
 
-.controller('DashCtrl', function($scope, Game, Data) {
+.controller('DashCtrl', function($scope, Game) {
+//        $scope.users = Game.users();
+        redrawUsersOnline();
 //        console.log("RELOAD");
-    $scope.allusers = Game.allUsers();
-    $scope.debug = Game.debug();
-    $scope.data = Data.data;
+//    $scope.allusers = Game.allUsers();
+//    $scope.debug = Game.debug();
+//    $scope.data = Data.data;
 //    $scope.$watch(
 //        function(){ return Data.data },
 //        function(newVal) {
@@ -12,14 +14,14 @@ angular.module('starter.controllers', [])
 //            $scope.data = newVal;
 //        }
 //    );
-   $scope.refresh = function(){
+//   $scope.refresh = function(){
+////       $scope.data = Data.data;
+//       $scope.allusers = Game.allUsers();
+//       $scope.debug = Game.debug();
 //       $scope.data = Data.data;
-       $scope.allusers = Game.allUsers();
-       $scope.debug = Game.debug();
-       $scope.data = Data.data;
-       console.log("BUTTON:REFRESH");
-   }
-    Game.addController($scope.refresh);
+//       console.log("BUTTON:REFRESH");
+//   }
+//    Game.addController($scope.refresh);
 })
 
 .controller('FriendsCtrl', function($scope, Game) {

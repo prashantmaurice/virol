@@ -1,1 +1,17 @@
-/* Empty. Add your own CSS if you like */
+body{
+    font-family: 'Montserrat', sans-serif;
+}
+#myDetails{
+    color: #82D1DE;
+    font-size: 2.4em;
+    padding: 20px;
+}
+.userlistLi{
+
+    background-color: #82D1DE;
+    color:#fff;
+    padding: 10px;
+    width: 100% ;
+    margin-bottom: 5px;
+    font-size: 1.4em;
+}

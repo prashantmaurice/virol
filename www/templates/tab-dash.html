@@ -1,15 +1,6 @@
-<ion-view title="Dashboard">
-  <ion-content class="padding">
-    <span ng-bind="data">sgdfh</span>
-    <h4 ng-repeat="user in allusers">== {{user.id}}</h4>
-    <div ng-controller="MadScientistCtrl" class="column">
-
-      <div ng-show="alive">
-          FIRST123
-      </div>
-
-      <div ng-hide="alive">
-          SECONF
-      </div>
-        <button ng-click="refresh()">REFRESH
+<ion-view title="Users Online">
+  <ion-content class="padding" style="background-color: #09435B;">
+    <div id="myDetails"></div>
+    <ul id="usersList"></ul>
+  </ion-content>
 </ion-view>
