@@ -53,6 +53,7 @@ function commandPlay(msg) {
 }
 function commandMove(msg) {
     if(prevMove==msg.player) return;
+    if(board[msg.moveY][msg.moveX].player==((msg.player==connectedPlayer)?userId:connectedPlayer))return;
     prevMove=msg.player;
     incrementRing(msg.moveX,msg.moveY,msg.player);
     redrawGameBoard();
@@ -67,6 +68,7 @@ function incrementRing(x,y, player){
     }
     else{
         board[y][x].value=1;
+        board[y][x].player=player;
         burst(x,y, player);
     }
 }
@@ -97,18 +99,19 @@ function redrawGameBoard(){
         temp += "<tr>";
         for(var j=0;j<board[i].length;j++){
             var temp2 = ((board[i][j].player==userId)?'op':'');
+            var temp3 = ((board[i][j].value==2)?'rotating':'rotating2');
             temp += "<td class='gameBox'>";
             temp += "<div class='dummy'></div>";
             temp += "<div class='content' data-x="+j+" data-y="+i+" onclick='clickRing(this)'>";
             if(board[i][j].value==0)
                 temp += "<div class='contentInside rotating'><div class='insidecircle'></div></div>";
             if(board[i][j].value==1)
-                temp += "<div class='contentInside "+temp2+" type1 rotating'><div class='insidecircle'></div></div>";
+                temp += "<div class='contentInside "+temp2+" type1 "+temp3+"'><div class='insidecircle'></div></div>";
             if(board[i][j].value==2)
-                temp += "<div class='contentInside "+temp2+" type2 rotating'><div class='semicircle "+temp2+"'></div>" +
+                temp += "<div class='contentInside "+temp2+" type2 "+temp3+"'><div class='semicircle "+temp2+"'></div>" +
                     "<div class='split2circle'></div><div class='insidecircle'></div></div>";
             if(board[i][j].value==3){
-                temp += "<div class='contentInside "+temp2+" type3 rotating'>" +
+                temp += "<div class='contentInside "+temp2+" type3 "+temp3+"'>" +
                     "<div class='semicircle1 "+temp2+"'></div><div class='semicircle2 "+temp2+"'></div><div class='semicircle3 "+temp2+"'></div>";
                 temp += "<div class='split3circle t1'></div><div class='split3circle t2'></div><div class='split3circle t3'></div><div class='insidecircle'></div></div>";
             }

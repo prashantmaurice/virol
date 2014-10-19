@@ -161,6 +161,9 @@ td .content {
 .rotating {
     -webkit-animation: rotating 6s linear infinite;
 }
+.rotating2 {
+    -webkit-animation: rotating 4s linear infinite;
+}
 .slider{
     height:100%;
 }
