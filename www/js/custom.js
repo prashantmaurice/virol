@@ -29,8 +29,12 @@ function disconnectUser() {
 function startGame() {
     socket.emit('command', {user1 : userId, user2:connectedPlayer, cmd : "start"});
 }
+function startGameCmd() {
+//    socket.emit('command', {user1 : userId, user2:connectedPlayer, cmd : "start"});
+}
 function commandPlay(msg) {
-    location.href="#/tab/friends";
+//    location.href="#/tab/friends";
+//    $ionicSlideBoxDelegate.next()
 }
 $(document ).ready(function() {
     console.log( "APP ready" );

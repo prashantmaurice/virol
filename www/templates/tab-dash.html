@@ -1,8 +1,17 @@
 <ion-view title="Users Online">
   <ion-content class="padding" style="background-color: #09435B;">
-    <div id="myDetails"></div>
-    <ul id="usersList"></ul>
-    <button onclick="disconnectUser()">DISCONNECT FROM USER</button>
-      <button onclick="startGame()">START GAME</button>
+      <ion-slide-box on-slide-changed="slideHasChanged($index)" show-pager="false">
+          <ion-slide>
+            <div id="myDetails"></div>
+            <ul id="usersList"></ul>
+            <button class="button button-block button-positive" onclick="disconnectUser()">DISCONNECT FROM USER</button>
+            <button class="button button-block button-positive" ng-click="nextSlide()">START GAME</button>
+          </ion-slide>
+          <ion-slide>
+
+              <button class="button button-block button-positive" ng-click="prevSlide()">END GAME</button>
+          </ion-slide>
+
+      </ion-slide-box>
   </ion-content>
 </ion-view>

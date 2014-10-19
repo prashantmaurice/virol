@@ -1,8 +1,22 @@
 angular.module('starter.controllers', [])
 
-.controller('DashCtrl', function($scope, Game) {
+.controller('DashCtrl', function($scope, Game, $ionicSlideBoxDelegate) {
 //        $scope.users = Game.users();
         redrawUsersOnline();
+        $ionicSlideBoxDelegate.enableSlide(false);
+        $scope.nextSlide = function () {
+            console.log("START GAME");
+            $ionicSlideBoxDelegate.next();
+            startGameCmd();
+        };
+        $scope.prevSlide = function () {
+            console.log("END GAME");
+            $ionicSlideBoxDelegate.previous();
+//            startGameCmd();
+        };
+
+
+
 //        console.log("RELOAD");
 //    $scope.allusers = Game.allUsers();
 //    $scope.debug = Game.debug();
