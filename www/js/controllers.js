@@ -1,41 +1,18 @@
 angular.module('starter.controllers', [])
 
-.controller('DashCtrl', function($scope, Game, $ionicSlideBoxDelegate) {
+.controller('DashCtrl', function($scope, $ionicSlideBoxDelegate) {
 //        $scope.users = Game.users();
         redrawUsersOnline();
-        $ionicSlideBoxDelegate.enableSlide(false);
+        $scope.init = function() {
+            $ionicSlideBoxDelegate.enableSlide(false)
+        };
         $scope.nextSlide = function () {
-            console.log("START GAME");
             $ionicSlideBoxDelegate.next();
             startGameCmd();
         };
         $scope.prevSlide = function () {
-            console.log("END GAME");
             $ionicSlideBoxDelegate.previous();
-//            startGameCmd();
         };
-
-
-
-//        console.log("RELOAD");
-//    $scope.allusers = Game.allUsers();
-//    $scope.debug = Game.debug();
-//    $scope.data = Data.data;
-//    $scope.$watch(
-//        function(){ return Data.data },
-//        function(newVal) {
-//            console.log("CALLED WATCH");
-//            $scope.data = newVal;
-//        }
-//    );
-//   $scope.refresh = function(){
-////       $scope.data = Data.data;
-//       $scope.allusers = Game.allUsers();
-//       $scope.debug = Game.debug();
-//       $scope.data = Data.data;
-//       console.log("BUTTON:REFRESH");
-//   }
-//    Game.addController($scope.refresh);
 })
 
 .controller('FriendsCtrl', function($scope, Game) {
