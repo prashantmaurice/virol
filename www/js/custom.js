@@ -5,6 +5,7 @@ var dataApi ={
     users : users
 };
 var prevMove = null;
+var explode_speed = 500;
 var boardSIze = { x : 5, y : 6};
 var board = matrix( boardSIze.y , boardSIze.x, { player:0,value:0});
 for(var i=0;i<board.length;i++){
@@ -52,11 +53,12 @@ function commandPlay(msg) {
     redrawGameBoard();
 }
 function commandMove(msg) {
-    if(prevMove==msg.player) return;
+    if(prevMove==msg.player) return;//TODO:activate this on production
     if(board[msg.moveY][msg.moveX].player==((msg.player==connectedPlayer)?userId:connectedPlayer))return;
     prevMove=msg.player;
     incrementRing(msg.moveX,msg.moveY,msg.player);
-    redrawGameBoard();
+
+
 }
 function incrementRing(x,y, player){
     if((x<0)|(y<0)|(x>=boardSIze.x)|(y>=boardSIze.y)){console.log("LIMITS"+(x<0)+"="+(y<0)+"="+(x>=boardSIze.x)+"="+(y>=boardSIze.y)+"="+x+"="+boardSIze.x);return;}
@@ -65,18 +67,43 @@ function incrementRing(x,y, player){
     if(currNum<3) {
         board[y][x].value++;
         board[y][x].player=player;
+        redrawGameBoard2();
+        return 0;
     }
     else{
-        board[y][x].value=1;
+        board[y][x].value=0;
         board[y][x].player=player;
-        burst(x,y, player);
+        explode(y,x);
+        setTimeout(function()
+            {
+                burst(x,y, player);
+                redrawGameBoard2();
+            }, explode_speed);
+        return explode_speed;
     }
 }
 function burst(x,y, player){
-    incrementRing(x-1,y, player);
-    incrementRing(x+1,y, player);
-    incrementRing(x,y-1, player);
-    incrementRing(x,y+1, player);
+//    explode(x,y);
+//    incrementRing(x-1,y, player,incrementRing(x+1,y, player,incrementRing(x,y-1, player,incrementRing(x,y+1, player))));
+//    incrementRing(x+1,y, player);
+//    incrementRing(x,y-1, player);
+//    incrementRing(x,y+1, player);
+    var t1 = incrementRing(x-1,y, player);
+    setTimeout(function(){
+        var t2 = incrementRing(x+1,y, player);
+        setTimeout(function(){
+            var t3 = incrementRing(x,y-1, player);
+            setTimeout(function(){
+                var t4 = incrementRing(x,y+1, player);
+                setTimeout(function(){
+                    console.log("DONE DISCO");
+                },t4);
+            },t3);
+        },t2);
+    },t1);
+//
+//    incrementRing(x,y-1, player);
+//    incrementRing(x,y+1, player);
 }
 
 
@@ -92,7 +119,37 @@ function matrix( rows, cols, defaultValue){
     }
     return arr;
 }
+function redrawGameBoard2(){
+    console.log("GAMEBOARD UPDATED");
+    for(var i=0;i<board.length;i++){
+        for(var j=0;j<board[i].length;j++){
+            var temp2 = ((board[i][j].player==userId)?'op':'');
+            var temp3 = ((board[i][j].value==2)?'rotating':'rotating2');
+            var obj = ".box-"+i+"-"+j;
+            $(obj+">.val0").hide();
+            $(obj+">.val1").hide();
+            $(obj+">.val2").hide();
+            $(obj+">.val3").hide();
+
+            if((board[i][j].player==userId))
+                $(obj).addClass('op')
+            else
+                $(obj).removeClass('op')
+            if(board[i][j].value==0)
+                $(obj+">.val0").show();
+            if(board[i][j].value==1)
+                $(obj+">.val1").show();
+            if(board[i][j].value==2)
+                $(obj+">.val2").show();
+            if(board[i][j].value==3){
+                $(obj+">.val3").show();
+            }
+        }
+
+    }
+}
 function redrawGameBoard(){
+    console.log("GAMEBOARD CREATED");
     $('#gameBoard').html("");
     var temp = "";
     for(var i=0;i<board.length;i++){
@@ -102,19 +159,24 @@ function redrawGameBoard(){
             var temp3 = ((board[i][j].value==2)?'rotating':'rotating2');
             temp += "<td class='gameBox'>";
             temp += "<div class='dummy'></div>";
-            temp += "<div class='content' data-x="+j+" data-y="+i+" onclick='clickRing(this)'>";
-            if(board[i][j].value==0)
-                temp += "<div class='contentInside rotating'><div class='insidecircle'></div></div>";
-            if(board[i][j].value==1)
-                temp += "<div class='contentInside "+temp2+" type1 "+temp3+"'><div class='insidecircle'></div></div>";
-            if(board[i][j].value==2)
-                temp += "<div class='contentInside "+temp2+" type2 "+temp3+"'><div class='semicircle "+temp2+"'></div>" +
+            temp += "<div class='content box-"+i+"-"+j+"' data-x="+j+" data-y="+i+" onclick='clickRing(this)'>";
+//            if(board[i][j].value==0)
+                //$(".box-1-1>.val0").css({display:none})
+                temp += "<div class='contentInside rotating val0'><div class='insidecircle'></div></div>";
+//            if(board[i][j].value==1)
+                temp += "<div class='contentInside "+temp2+" type1 val1 "+temp3+"'><div class='insidecircle'></div></div>";
+//            if(board[i][j].value==2)
+                temp += "<div class='contentInside "+temp2+" type2 val2 "+temp3+"'><div class='semicircle "+temp2+"'></div>" +
                     "<div class='split2circle'></div><div class='insidecircle'></div></div>";
-            if(board[i][j].value==3){
-                temp += "<div class='contentInside "+temp2+" type3 "+temp3+"'>" +
+//            if(board[i][j].value==3){
+                temp += "<div class='blast blast-"+i+"-"+j+"-left'><div class='blastLeft'></div></div>";
+                temp += "<div class='blast blast-"+i+"-"+j+"-right'><div class='blastLeft'></div></div>";
+                temp += "<div class='blast blast-"+i+"-"+j+"-top'><div class='blastLeft'></div></div>";
+                temp += "<div class='blast blast-"+i+"-"+j+"-bottom'><div class='blastLeft'></div></div>";
+                temp += "<div class='contentInside val3 "+temp2+" type3 "+temp3+"'>" +
                     "<div class='semicircle1 "+temp2+"'></div><div class='semicircle2 "+temp2+"'></div><div class='semicircle3 "+temp2+"'></div>";
                 temp += "<div class='split3circle t1'></div><div class='split3circle t2'></div><div class='split3circle t3'></div><div class='insidecircle'></div></div>";
-            }
+            //}
 
             temp += "</div>";
 
@@ -130,11 +192,22 @@ function redrawGameBoard(){
 //        if(users[i].userId == connectedPlayer) color = "style='background-color:#0f0'";
 //        var temp = "<li "+color+" class='userlistLi' data-userId="+users[i].userId+"  onclick='connectUser(this)'>"+users[i].userId+"</li>";
         $('#gameBoard').html(temp);
+
     }
+    redrawGameBoard2();
+
+}
+function explode(i,j){
+    console.log("EXPLODE CALLED:"+i+j);
+    $('.blast-'+i+'-'+j+'-left').animate({left:"-100%"},explode_speed,function(){$(this).css({left:"0%"},function(){console.log('DONE ANIMATION')})});
+    $('.blast-'+i+'-'+j+'-right').animate({left:"100%"},explode_speed,function(){$(this).css({left:"0%"})});
+    $('.blast-'+i+'-'+j+'-top').animate({top:"100%"},explode_speed,function(){$(this).css({top:"0%"})});
+    $('.blast-'+i+'-'+j+'-bottom').animate({top:"-100%"},explode_speed,function(){$(this).css({top:"0%"})});
+//    wait(2000);
 }
 $(document ).ready(function() {
     console.log( "APP ready" );
-    socket = io('http://192.168.1.4:9000', {path: '/socket.io'});
+    socket = io('http://192.168.1.5:9000', {path: '/socket.io'});
     socket.emit('all users', 'hi');
     socket.on('new connection',function(msg){
         userId = msg.id;

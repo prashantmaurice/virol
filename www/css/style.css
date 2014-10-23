@@ -60,6 +60,8 @@ td .content {
     margin:20%;
     background: #38526b;
     overflow: hidden;
+    position:absolute;
+    z-index: 4;
 }
 .contentInside.type1{
     background: #4d9790;
@@ -70,13 +72,13 @@ td .content {
 .contentInside.type3{
     background:#3ac6a9;
 }
-.contentInside.type1.op{
+.op>.contentInside.type1{
     background: #e4030f;
 }
-.contentInside.type2.op{
+.op>.contentInside.type2{
     background: #ed4e3d;
 }
-.contentInside.type3.op{
+.op>.contentInside.type3{
     background: #fc5442;
 }
 .insidecircle{
@@ -124,7 +126,6 @@ td .content {
     background: #1daa94;
     position: relative;
 }
-.semicircle.op{background: #e4030f;}
 .semicircle1{
     width: 50%;
     height: 100%;
@@ -151,9 +152,10 @@ td .content {
     position: relative;
     background: #23c2a8;
 }
-.semicircle1.op{background: #ed4e3d;}
-.semicircle2.op{background: #e4030f;}
-.semicircle3.op{background: #fc5442;}
+.op>.contentInside>.semicircle{background: #e4030f;}
+.op>.contentInside>.semicircle1{background: #ed4e3d;}
+.op>.contentInside>.semicircle2{background: #e4030f;}
+.op>.contentInside>.semicircle3{background: #fc5442;}
 @-webkit-keyframes rotating {
     from{-webkit-transform: rotate(0deg);}
     to{-webkit-transform: rotate(360deg);   }
@@ -166,4 +168,16 @@ td .content {
 }
 .slider{
     height:100%;
+}
+
+/*===============BLAST OBJECTS========= */
+.blast{
+    border-radius: 50%;
+    width: 50%;
+    height: 50%;
+    margin:25%;
+    background: #4d9790;
+    position:absolute;
+    z-index: 2;
+    /*opacity:0.5;*/
 }
