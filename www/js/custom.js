@@ -8,15 +8,18 @@ var prevMove = null;
 var explode_speed = 500;
 var boardSIze = { x : 5, y : 6};
 var board = matrix( boardSIze.y , boardSIze.x, { player:0,value:0});
-for(var i=0;i<board.length;i++){
-    for(var j=0;j<board[i].length;j++){
-        board[i][j] = { player:0,value:0};
-    }
-}
+resetGameBoard();
 var refreshControllers = [];
 var debug ="nothing";
 var userId = null;
 var connectedPlayer = null;
+function resetGameBoard(){
+    for(var i=0;i<board.length;i++){
+        for(var j=0;j<board[i].length;j++){
+            board[i][j] = { player:0,value:0};
+        }
+    }
+}
 function redrawUsersOnline(){
     $('#usersList').html("");
     for(var i=0;i<users.length;i++){
@@ -41,24 +44,29 @@ function startGame() {
 //    socket.emit('command', {user1 : userId, user2:connectedPlayer, cmd : "start"});
 }
 function startGameCmd() {
-    socket.emit('command', {user1 : userId, user2:connectedPlayer, cmd : "start"});
+    socket.emit('command', {userId1 : userId, userId2:connectedPlayer, cmd : "start"});
+}
+function endGameCmd() {
+    socket.emit('command', {userId1 : userId, userId2:connectedPlayer, cmd : "end"});
 }
 function clickRing(elem){
     console.log("MOVE:"+elem.getAttribute('data-x')+"=="+elem.getAttribute('data-y'));
-    socket.emit('command', {user1 : userId, user2 :connectedPlayer, cmd : "move",moveX : parseInt(elem.getAttribute('data-x')), moveY:parseInt(elem.getAttribute('data-y')), player:userId});
+    socket.emit('command', {userId1 : userId, userId2 :connectedPlayer, cmd : "move",moveX : parseInt(elem.getAttribute('data-x')), moveY:parseInt(elem.getAttribute('data-y')), player:userId});
 }
 function commandPlay(msg) {
-//    location.href="#/tab/friends";
-//    $ionicSlideBoxDelegate.next()
+    $('#nextSlideButton').click();
     redrawGameBoard();
+}
+function commandEnd(msg) {
+    $('#prevSlideButton').click();
+    socket.emit('all users', 'hi');
+    resetGameBoard();
 }
 function commandMove(msg) {
     if(prevMove==msg.player) return;//TODO:activate this on production
     if(board[msg.moveY][msg.moveX].player==((msg.player==connectedPlayer)?userId:connectedPlayer))return;
     prevMove=msg.player;
     incrementRing(msg.moveX,msg.moveY,msg.player);
-
-
 }
 function incrementRing(x,y, player){
     if((x<0)|(y<0)|(x>=boardSIze.x)|(y>=boardSIze.y)){console.log("LIMITS"+(x<0)+"="+(y<0)+"="+(x>=boardSIze.x)+"="+(y>=boardSIze.y)+"="+x+"="+boardSIze.x);return;}
@@ -255,9 +263,12 @@ function setupSockets(){
     //COMMANDS
     socket.on('command', function(msg){
         console.log("CMD:"+JSON.stringify(msg));
-        if(msg.cmd=="start")
+        if(msg.cmd=="start"){
             commandPlay(msg);
-        if(msg.cmd=="move")
+        }else if(msg.cmd=="move"){
             commandMove(msg);
+        }else if(msg.cmd=="end"){
+            commandEnd(msg);
+        }
     });
 }

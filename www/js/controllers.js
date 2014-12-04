@@ -6,9 +6,16 @@ angular.module('starter.controllers', [])
         $scope.init = function() {
             $ionicSlideBoxDelegate.enableSlide(false)
         };
+        $scope.requestStart = function () {
+            if(connectedPlayer!=null) {
+                startGameCmd();
+            }
+        };
+        $scope.requestEnd = function () {
+            endGameCmd();
+        };
         $scope.nextSlide = function () {
             $ionicSlideBoxDelegate.next();
-            startGameCmd();
         };
         $scope.prevSlide = function () {
             $ionicSlideBoxDelegate.previous();
