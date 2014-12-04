@@ -90,7 +90,7 @@ function incrementRing(x,y, player){
     }
     else{
         board[y][x].value=0;
-        board[y][x].player=player;
+        board[y][x].player=-1;
         explode(y,x);
         setTimeout(function()
             {
@@ -187,10 +187,10 @@ function redrawGameBoard(){
                 temp += "<div class='contentInside "+temp2+" type2 val2 "+temp3+"'><div class='semicircle "+temp2+"'></div>" +
                     "<div class='split2circle'></div><div class='insidecircle'></div></div>";
 //            if(board[i][j].value==3){
-                temp += "<div class='blast blast-"+i+"-"+j+"-left'><div class='blastLeft'></div></div>";
-                temp += "<div class='blast blast-"+i+"-"+j+"-right'><div class='blastLeft'></div></div>";
-                temp += "<div class='blast blast-"+i+"-"+j+"-top'><div class='blastLeft'></div></div>";
-                temp += "<div class='blast blast-"+i+"-"+j+"-bottom'><div class='blastLeft'></div></div>";
+                temp += "<div class='blast blast-"+i+"-"+j+" left'><div class='blastLeft'></div></div>";
+                temp += "<div class='blast blast-"+i+"-"+j+" right'><div class='blastLeft'></div></div>";
+                temp += "<div class='blast blast-"+i+"-"+j+" top'><div class='blastLeft'></div></div>";
+                temp += "<div class='blast blast-"+i+"-"+j+" bottom'><div class='blastLeft'></div></div>";
                 temp += "<div class='contentInside val3 "+temp2+" type3 "+temp3+"'>" +
                     "<div class='semicircle1 "+temp2+"'></div><div class='semicircle2 "+temp2+"'></div><div class='semicircle3 "+temp2+"'></div>";
                 temp += "<div class='split3circle t1'></div><div class='split3circle t2'></div><div class='split3circle t3'></div><div class='insidecircle'></div></div>";
@@ -217,10 +217,31 @@ function redrawGameBoard(){
 }
 function explode(i,j){
     console.log("EXPLODE CALLED:"+i+j);
-    $('.blast-'+i+'-'+j+'-left').velocity({left:"-100%"},explode_speed,function(){$(this).css({left:"0%"},function(){console.log('DONE ANIMATION')})});
-    $('.blast-'+i+'-'+j+'-right').velocity({left:"100%"},explode_speed,function(){$(this).css({left:"0%"})});
-    $('.blast-'+i+'-'+j+'-top').velocity({top:"100%"},explode_speed,function(){$(this).css({top:"0%"})});
-    $('.blast-'+i+'-'+j+'-bottom').velocity({top:"-100%"},explode_speed,function(){$(this).css({top:"0%"})});
+//    $('.blast-'+i+'-'+j+'-left').velocity({left:"-100%"},explode_speed,function(){$(this).css({left:"0%"},function(){console.log('DONE ANIMATION')})});
+//    $('.blast-'+i+'-'+j+'-right').velocity({left:"100%"},explode_speed,function(){$(this).css({left:"0%"})});
+//    $('.blast-'+i+'-'+j+'-top').velocity({top:"100%"},explode_speed,function(){$(this).css({top:"0%"})});
+//    $('.blast-'+i+'-'+j+'-bottom').velocity({top:"-100%"},explode_speed,function(){$(this).css({top:"0%"})});
+
+    $('.blast-'+i+'-'+j+'.left').css({'-webkit-transition': 'left 0.5s, top 0.5s','transition': 'left 0.5s, top 0.5s','-webkit-transform': 'translateZ(0)'});
+    $('.blast-'+i+'-'+j+'.right').css({'-webkit-transition': 'left 0.5s, top 0.5s','transition': 'left 0.5s, top 0.5s','-webkit-transform': 'translateZ(0)'});
+    $('.blast-'+i+'-'+j+'.top').css({'-webkit-transition': 'left 0.5s, top 0.5s','transition': 'left 0.5s, top 0.5s','-webkit-transform': 'translateZ(0)'});
+    $('.blast-'+i+'-'+j+'.bottom').css({'-webkit-transition': 'left 0.5s, top 0.5s','transition': 'left 0.5s, top 0.5s','-webkit-transform': 'translateZ(0)'});
+
+    $('.blast-'+i+'-'+j+'.left').addClass('active');
+    $('.blast-'+i+'-'+j+'.right').addClass('active');
+    $('.blast-'+i+'-'+j+'.top').addClass('active');
+    $('.blast-'+i+'-'+j+'.bottom').addClass('active');
+    setTimeout(function(){
+        $('.blast-'+i+'-'+j+'.left').css({'-webkit-transition': 'left 0s, top 0s','transition': 'left 0s, top 0s','-webkit-transform': 'translateZ(0)'});
+        $('.blast-'+i+'-'+j+'.right').css({'-webkit-transition': 'left 0s, top 0s','transition': 'left 0s, top 0s','-webkit-transform': 'translateZ(0)'});
+        $('.blast-'+i+'-'+j+'.top').css({'-webkit-transition': 'left 0s, top 0s','transition': 'left 0s, top 0s','-webkit-transform': 'translateZ(0)'});
+        $('.blast-'+i+'-'+j+'.bottom').css({'-webkit-transition': 'left 0s, top 0s','transition': 'left 0s, top 0s','-webkit-transform': 'translateZ(0)'});
+        $('.blast-'+i+'-'+j+'.left').removeClass('active');
+        $('.blast-'+i+'-'+j+'.right').removeClass('active');
+        $('.blast-'+i+'-'+j+'.top').removeClass('active');
+        $('.blast-'+i+'-'+j+'.bottom').removeClass('active');
+    },explode_speed);
+
 //    wait(2000);
 }
 $(document ).ready(function() {
