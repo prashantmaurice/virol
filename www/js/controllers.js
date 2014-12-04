@@ -16,6 +16,7 @@ angular.module('starter.controllers', [])
         };
         $scope.nextSlide = function () {
             $ionicSlideBoxDelegate.next();
+//            slidetoPage3();
         };
         $scope.prevSlide = function () {
             $ionicSlideBoxDelegate.previous();

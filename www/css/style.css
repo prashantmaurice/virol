@@ -3,14 +3,30 @@ body, button{
     font-family: 'Fjalla One', sans-serif;
 }
 
-/*@font-face {*/
-    /*font-family: ospFont;*/
-    /*src: url(OSP-DIN.ttf);*/
-/*}*/
-/*@font-face {*/
-    /*font-family: lightFont;*/
-    /*src: url(Montserrat-Regular.ttf);*/
-/*}*/
+@font-face {
+    font-family: ospFont;
+    src: url(OSP-DIN.ttf);
+}
+@font-face {
+    font-family: "Fjalla One";
+    src: url(FjallaOne-Regular.otf);
+}
+#page1{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background-color: #233141;
+    z-index: 3;
+}
+#page2{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: 1;
+    background-color: #34495E;
+    /*left: 30%;*/
+}
+
 
 #myDetails{
     color: #3AC6A9;
@@ -168,6 +184,10 @@ td .content {
 .slider{
     height:100%;
 }
+/*===============BLAST OBJECTS========= */
+
+
+
 
 /*===============BLAST OBJECTS========= */
 .blast{

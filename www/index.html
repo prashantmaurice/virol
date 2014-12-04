@@ -7,7 +7,7 @@
 
     <link href="lib/ionic/css/ionic.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
-      <link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+      <!--<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>-->
 
     <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
     <link href="css/ionic.app.css" rel="stylesheet">
@@ -31,20 +31,31 @@
   <body ng-app="starter" animation="slide-left-right-ios7" ng-controller="DashCtrl">
   <ion-pane>
       <ion-content class="" style="background-color: #2D3E50;" scroll="false">
-          <ion-slide-box on-slide-changed="slideHasChanged($index)" show-pager="false" ng-init="init()" >
-              <ion-slide style="background-color: #2D3E50; height:100%" class="padding">
-                  <div id="myDetails"></div>
-                  <ul id="usersList"></ul>
-                  <button class="button button-block button-positive" onclick="disconnectUser()">DISCONNECT FROM USER</button>
-                  <button class="button button-block button-positive" ng-click="requestStart()">START GAME</button>
-                  <button id="nextSlideButton" class="button" style="display: none" ng-click="nextSlide()">DUMMY</button>
-              </ion-slide>
-              <ion-slide>
-                  <table id="gameBoard"></table>
-                  <button class="button button-block button-positive" ng-click="requestEnd()">END GAME</button>
-                  <button id="prevSlideButton" class="button" style="display: none" ng-click="prevSlide()">DUMMY</button>
-              </ion-slide>
-          </ion-slide-box>
+        <ion-slide-box on-slide-changed="slideHasChanged($index)" show-pager="false" ng-init="init()" >
+            <ion-slide style="background-color: #2D3E50; height:100%" class="padding">
+                <div id="myDetails"></div>
+                <ul id="usersList"></ul>
+                <button class="button button-block button-positive" onclick="disconnectUser()">DISCONNECT FROM USER</button>
+                <button class="button button-block button-positive" ng-click="requestStart()">START GAME</button>
+                <button id="nextSlideButton" class="button" style="display: none" ng-click="nextSlide()">DUMMY</button>
+            </ion-slide>
+            <ion-slide>
+                <table id="gameBoard"></table>
+                <button class="button button-block button-positive" ng-click="requestEnd()">END GAME</button>
+                <button id="prevSlideButton" class="button" style="display: none" ng-click="prevSlide()">DUMMY</button>
+            </ion-slide>
+        </ion-slide-box>
+
+          <!--<div id="page1">-->
+              <!--<div id="myDetails"></div>-->
+              <!--<ul id="usersList"></ul>-->
+              <!--<button class="button button-block button-positive" onclick="disconnectUser()">DISCONNECT FROM USER</button>-->
+              <!--<button class="button button-block button-positive" ng-click="requestStart()">START GAME</button>-->
+          <!--</div>-->
+          <!--<div id="page2">-->
+              <!--<table id="gameBoard"></table>-->
+              <!--<button class="button button-block button-positive" ng-click="requestEnd()">END GAME</button>-->
+          <!--</div>-->
       </ion-content>
   </ion-pane>
 

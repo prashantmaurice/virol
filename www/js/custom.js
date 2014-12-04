@@ -13,6 +13,7 @@ var refreshControllers = [];
 var debug ="nothing";
 var userId = null;
 var connectedPlayer = null;
+var PAGE_SLIDE_TIME = 500;
 function resetGameBoard(){
     for(var i=0;i<board.length;i++){
         for(var j=0;j<board[i].length;j++){
@@ -54,10 +55,13 @@ function clickRing(elem){
     socket.emit('command', {userId1 : userId, userId2 :connectedPlayer, cmd : "move",moveX : parseInt(elem.getAttribute('data-x')), moveY:parseInt(elem.getAttribute('data-y')), player:userId});
 }
 function commandPlay(msg) {
+//    slidetoPage3();
     $('#nextSlideButton').click();
     redrawGameBoard();
+//    $('#gameBoard').hide()
 }
 function commandEnd(msg) {
+//    slidetoPage2();
     $('#prevSlideButton').click();
     socket.emit('all users', 'hi');
     resetGameBoard();
@@ -139,7 +143,7 @@ function redrawGameBoard2(){
             $(obj+">.val2").hide();
             $(obj+">.val3").hide();
 
-            if((board[i][j].player==userId))
+            if((board[i][j].player!=userId))
                 $(obj).addClass('op')
             else
                 $(obj).removeClass('op')
@@ -163,14 +167,14 @@ function redrawGameBoard(){
     for(var i=0;i<board.length;i++){
         temp += "<tr>";
         for(var j=0;j<board[i].length;j++){
-            var temp2 = ((board[i][j].player==userId)?'op':'');
+            var temp2 = ((board[i][j].player!=userId)?'op':'');
             var temp3 = ((board[i][j].value==2)?'rotating':'rotating2');
             temp += "<td class='gameBox'>";
             temp += "<div class='dummy'></div>";
             temp += "<div class='content box-"+i+"-"+j+"' data-x="+j+" data-y="+i+" onclick='clickRing(this)'>";
 //            if(board[i][j].value==0)
                 //$(".box-1-1>.val0").css({display:none})
-                temp += "<div class='contentInside rotating val0'><div class='insidecircle'></div></div>";
+                temp += "<div class='contentInside  val0'><div class='insidecircle'></div></div>";
 //            if(board[i][j].value==1)
                 temp += "<div class='contentInside "+temp2+" type1 val1 "+temp3+"'><div class='insidecircle'></div></div>";
 //            if(board[i][j].value==2)
@@ -271,4 +275,22 @@ function setupSockets(){
             commandEnd(msg);
         }
     });
+}
+
+//PAGE SLIDER ANIMATIONS
+function slidetoPage3(){
+    $("#page1").animate({left:'-100%'},PAGE_SLIDE_TIME);
+//    $("#page2").animate({left:'0%'},PAGE_SLIDE_TIME, function () {
+//        $('#gameBoard').css('display',"visible");
+//    });
+}
+function slidetoPage2(){
+    $('#gameBoard').css('display',"hidden");
+    $("#page1").animate({left:'0%'},PAGE_SLIDE_TIME);
+//    $("#page2").animate({left:'30%'},PAGE_SLIDE_TIME,function(){
+//        $('#gameBoard').css('display',"hidden");
+//    });
+}
+function slidetoPage1(){
+    $("#page1").animate({left:'-100%'},PAGE_SLIDE_TIME);
 }
