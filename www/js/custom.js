@@ -30,10 +30,10 @@ function redrawUsersOnline(){
 }
 function connectUser(elem){
     console.log("TRYING TO CONNECT TO:"+elem.getAttribute('data-userId'));
-    socket.emit('user connect request', {userId1 : userId, userId2 :elem.getAttribute('data-userId') });
+    socket.emit('connectUser', {userId1 : userId, userId2 :elem.getAttribute('data-userId') });
 }
 function disconnectUser() {
-    socket.emit('user disconnect', {user1 : userId, user2:connectedPlayer});
+    socket.emit('user disconnect', {userId1 : userId});
 }
 
 //GAME LOGICS
@@ -227,13 +227,13 @@ function setupSockets(){
     });
 
     //USER TRYING TO CONNECT
-    socket.on('user request', function(msg){
+    socket.on('user connect request', function(msg){
         var open = (connectedPlayer==null);
         if(open){
             connectedPlayer = msg.userId1;
             redrawUsersOnline();
         }else{
-
+            console.log("user denied incoming conn request");
         }
         socket.emit('user request reply', { ok : open, userId1:msg.userId1, userId2:userId })
 
@@ -243,7 +243,7 @@ function setupSockets(){
             connectedPlayer = msg.userId2;
             redrawUsersOnline();
         }
-        console.log("CONNECTTION ACCEPTED:"+msg.ok);
+        console.log("CONNECTION ACCEPTED:"+msg.ok);
     })
 
     //USER TRYING TO DISCONNECT
