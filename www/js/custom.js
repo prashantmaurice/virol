@@ -67,8 +67,14 @@ function commandEnd(msg) {
     resetGameBoard();
 }
 function commandMove(msg) {
-    if(prevMove==msg.player) return;//TODO:activate this on production
-    if(board[msg.moveY][msg.moveX].player==((msg.player==connectedPlayer)?userId:connectedPlayer))return;
+    if(prevMove==msg.player){
+        console.log("ITS NOT YOUR MOVE");
+        return;//TODO:activate this on production
+    }
+    if(board[msg.moveY][msg.moveX].player==((msg.player==connectedPlayer)?userId:connectedPlayer)){
+        console.log("THIS MOVE IS BLOCKED BY OPPONENT POSITION");
+        return;
+    }
     prevMove=msg.player;
     incrementRing(msg.moveX,msg.moveY,msg.player);
 }
@@ -211,10 +217,10 @@ function redrawGameBoard(){
 }
 function explode(i,j){
     console.log("EXPLODE CALLED:"+i+j);
-    $('.blast-'+i+'-'+j+'-left').animate({left:"-100%"},explode_speed,function(){$(this).css({left:"0%"},function(){console.log('DONE ANIMATION')})});
-    $('.blast-'+i+'-'+j+'-right').animate({left:"100%"},explode_speed,function(){$(this).css({left:"0%"})});
-    $('.blast-'+i+'-'+j+'-top').animate({top:"100%"},explode_speed,function(){$(this).css({top:"0%"})});
-    $('.blast-'+i+'-'+j+'-bottom').animate({top:"-100%"},explode_speed,function(){$(this).css({top:"0%"})});
+    $('.blast-'+i+'-'+j+'-left').velocity({left:"-100%"},explode_speed,function(){$(this).css({left:"0%"},function(){console.log('DONE ANIMATION')})});
+    $('.blast-'+i+'-'+j+'-right').velocity({left:"100%"},explode_speed,function(){$(this).css({left:"0%"})});
+    $('.blast-'+i+'-'+j+'-top').velocity({top:"100%"},explode_speed,function(){$(this).css({top:"0%"})});
+    $('.blast-'+i+'-'+j+'-bottom').velocity({top:"-100%"},explode_speed,function(){$(this).css({top:"0%"})});
 //    wait(2000);
 }
 $(document ).ready(function() {
@@ -222,7 +228,7 @@ $(document ).ready(function() {
     setupSockets();
 });
 function setupSockets(){
-    socket = io('http://192.168.1.43:9000', {path: '/socket.io'});
+    socket = io('http://192.168.1.14:9000', {path: '/socket.io'});
     socket.emit('all users', 'hi');
     socket.on('new connection',function(msg){
         userId = msg.id;
