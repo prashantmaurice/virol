@@ -207,7 +207,10 @@ function explode(i,j){
 }
 $(document ).ready(function() {
     console.log( "APP ready" );
-    socket = io('http://192.168.1.5:9000', {path: '/socket.io'});
+    setupSockets();
+});
+function setupSockets(){
+    socket = io('http://192.168.1.43:9000', {path: '/socket.io'});
     socket.emit('all users', 'hi');
     socket.on('new connection',function(msg){
         userId = msg.id;
@@ -215,13 +218,12 @@ $(document ).ready(function() {
     });
     socket.on('all users', function(msg){
         console.log("ALL USERS RECEIVED:"+msg);
-        dataApi.users.splice(0,dataApi.users.length);
+        dataApi.users.splice(0,dataApi.users.length);//remove all
         msg.forEach(function(userIdTemp) {
             users.push({userId: userIdTemp});
         });
         redrawUsersOnline();
-        console.log("received users:"+JSON.stringify(users));
-
+        console.log("received all users:"+JSON.stringify(users));
     });
 
     //USER TRYING TO CONNECT
@@ -258,4 +260,4 @@ $(document ).ready(function() {
         if(msg.cmd=="move")
             commandMove(msg);
     });
-});
+}
